@@ -153,7 +153,7 @@ class UnaryMinus extends UnaryOperator {
   ///
   /// For example, to create -1:
   ///
-  ///     one = Number(1);
+  ///     one = Number.one;
   ///     minus_one = UnaryMinus(one);
   ///
   /// or just:
@@ -199,7 +199,7 @@ class UnaryPlus extends UnaryOperator {
   ///
   /// For example, to create +1:
   ///
-  ///     one = Number(1);
+  ///     one = Number.one;
   ///     plus_one = UnaryPlus(one);
   ///
   /// or just:
@@ -607,7 +607,7 @@ class Power extends BinaryOperator {
     }
 
     if (_isNumber(exponentOp, 0)) {
-      return Number(1.0); // x^0 = 1
+      return Number.one; // x^0 = 1
     }
 
     if (_isNumber(exponentOp, 1)) {
@@ -619,8 +619,8 @@ class Power extends BinaryOperator {
 
   @override
   dynamic evaluate(EvaluationType type, ContextModel context) {
-    final num base = first.evaluate(type, context);
     if (type == EvaluationType.REAL) {
+      final num base = first.evaluate(type, context);
       // Consider the following equation: x^(2/y).
       // This equation can be evaluated for any negative x, since the sub result
       // is positive due to the even numerator. However, the IEEE Standard for
@@ -727,7 +727,27 @@ abstract class Literal extends Expression {
 class Number extends Literal {
   /// Creates a number literal with given value.
   /// Always holds a double internally.
-  Number(num value) : super(value.toDouble());
+  // Number(num value) : super(value.toDouble());
+
+  /// Create a new [Decimal] from a [BigInt].
+  Number.fromBigInt(BigInt value) : super(Decimal.fromBigInt(value));
+
+  /// Create a new [Decimal] from an [int].
+  Number.fromInt(int value) : super(Decimal.fromBigInt(BigInt.from(value)));
+
+  /// Parses [source] as a decimal literal and returns its value as [Decimal].
+  Number.parse(String source) : super(Decimal.parse(source));
+
+  /// The [Decimal] corresponding to `0`.
+  static Number zero = Number.fromInt(0);
+
+  /// The [Decimal] corresponding to `1`.
+  static Number one = Number.fromInt(1);
+
+  /// The [Decimal] corresponding to `10`.
+  static Number ten = Number.fromInt(10);
+
+  static Number e = Number.parse('2.718281828459045');
 
   @override
   bool isConstant() => true;
@@ -756,7 +776,7 @@ class Number extends Literal {
   }
 
   @override
-  Expression derive(String toVar) => Number(0.0);
+  Expression derive(String toVar) => Number.zero;
 }
 
 /// A vector of arbitrary size.
@@ -765,7 +785,7 @@ class Vector extends Literal {
   ///
   /// For example, to create a 3-dimensional vector:
   ///
-  ///     x = y = z = Number(1);
+  ///     x = y = z = Number.one;
   ///     vec3 = Vector([x, y, z]);
   Vector(List<Expression> super.elements);
 
@@ -869,7 +889,7 @@ class Variable extends Literal {
   Variable(this.name);
 
   @override
-  Expression derive(String toVar) => name == toVar ? Number(1.0) : Number(0.0);
+  Expression derive(String toVar) => name == toVar ? Number.one : Number.zero;
 
   @override
   String toString() => name;

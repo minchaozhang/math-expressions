@@ -37,7 +37,7 @@ class Parser {
 
       switch (currToken.type) {
         case TokenType.VAL:
-          currExpr = Number(double.parse(currToken.text));
+          currExpr = Number.parse(currToken.text);
           break;
         case TokenType.VAR:
           currExpr = Variable(currToken.text);

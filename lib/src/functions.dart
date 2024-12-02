@@ -308,11 +308,11 @@ class Exponential extends DefaultFunction {
     final Expression expSimpl = exp.simplify();
 
     if (_isNumber(expSimpl, 0)) {
-      return Number(1); // e^0 = 1
+      return Number.one; // e^0 = 1
     }
 
     if (_isNumber(expSimpl, 1)) {
-      return Number(math.e); // e^1 = e
+      return Number.e; // e^1 = e
     }
 
     if (expSimpl is Times && expSimpl.second is Ln) {
@@ -357,7 +357,7 @@ class Log extends DefaultFunction {
 
   /// Creates a natural logarithm.
   /// Must only be used internally by the [Ln] class.
-  Log._ln(Expression arg) : super._binary('ln', Number(math.e), arg);
+  Log._ln(Expression arg) : super._binary('ln', Number.e, arg);
 
   /// The base of this logarithm.
   Expression get base => getParam(0);
@@ -418,7 +418,7 @@ class Ln extends Log {
     final Expression argSimpl = arg.simplify();
 
     if (_isNumber(argSimpl, 1)) {
-      return Number(0); // ln(1) = 0
+      return Number.zero; // ln(1) = 0
     }
 
     return Ln(argSimpl);
@@ -495,7 +495,7 @@ class Root extends DefaultFunction {
   ///
   /// This method is used to determine the derivation of a root
   /// expression.
-  Expression asPower() => Power(arg, Divide(Number(1), Number(n)));
+  Expression asPower() => Power(arg, Divide(Number.one, Number.fromInt(n)));
 }
 
 /// The square root function. A specialisation of [Root].
@@ -530,11 +530,11 @@ class Sqrt extends Root {
     }
 
     if (_isNumber(argSimpl, 0)) {
-      return Number(0); // sqrt(0) = 0
+      return Number.zero; // sqrt(0) = 0
     }
 
     if (_isNumber(argSimpl, 1)) {
-      return Number(1); // sqrt(1) = 1
+      return Number.one; // sqrt(1) = 1
     }
 
     return Sqrt(argSimpl);
@@ -583,7 +583,7 @@ class Sin extends DefaultFunction {
     final Expression argSimpl = arg.simplify();
 
     if (_isNumber(argSimpl, 0)) {
-      return Number(0); // sin(0) = 0
+      return Number.zero; // sin(0) = 0
     }
 
     return Sin(argSimpl);
@@ -634,7 +634,7 @@ class Cos extends DefaultFunction {
     final Expression argSimpl = arg.simplify();
 
     if (_isNumber(argSimpl, 0)) {
-      return Number(1); // cos(0) = 1
+      return Number.one; // cos(0) = 1
     }
 
     return Cos(argSimpl);
@@ -686,7 +686,7 @@ class Tan extends DefaultFunction {
     final Expression argSimpl = arg.simplify();
 
     if (_isNumber(argSimpl, 0)) {
-      return Number(0); // tan(0) = 0
+      return Number.zero; // tan(0) = 0
     }
 
     return Tan(argSimpl);
@@ -727,7 +727,7 @@ class Asin extends DefaultFunction {
 
   @override
   Expression derive(String toVar) =>
-      Number(1) / Sqrt(Number(1) - (arg ^ Number(2)));
+      Number.one / Sqrt(Number.one - (arg ^ Number.fromInt(2)));
 
   /// Possible simplifications:
   @override
@@ -758,7 +758,7 @@ class Acos extends DefaultFunction {
 
   @override
   Expression derive(String toVar) =>
-      -Number(1) / Sqrt(Number(1) - (arg ^ Number(2)));
+      -Number.one / Sqrt(Number.one - (arg ^ Number.fromInt(2)));
 
   /// Possible simplifications:
   @override
@@ -789,7 +789,7 @@ class Atan extends DefaultFunction {
 
   @override
   Expression derive(String toVar) =>
-      Number(1) / (Number(1) + (arg ^ Number(2)));
+      Number.one / (Number.one + (arg ^ Number.fromInt(2)));
 
   /// Possible simplifications:
   @override
@@ -854,7 +854,7 @@ class Ceil extends DefaultFunction {
   /// Ceil never has a slope.
   //TODO No differentiation possible for integer x
   @override
-  Expression derive(String toVar) => Number(0);
+  Expression derive(String toVar) => Number.zero;
 
   /// Possible simplifications:
   ///
@@ -893,7 +893,7 @@ class Floor extends DefaultFunction {
   /// Floor never has a slope.
   //TODO No differentiation possible for integer x
   @override
-  Expression derive(String toVar) => Number(0);
+  Expression derive(String toVar) => Number.zero;
 
   /// Possible simplifications:
   ///
@@ -931,7 +931,7 @@ class Sgn extends DefaultFunction {
 
   //TODO not differentiable at 0.
   @override
-  Expression derive(String toVar) => Number(0);
+  Expression derive(String toVar) => Number.zero;
 
   @override
   Expression simplify() => Sgn(arg.simplify());
@@ -962,13 +962,13 @@ class Factorial extends DefaultFunction {
   String toString() => '$arg!';
 
   @override
-  Expression derive(String toVar) => Number(0);
+  Expression derive(String toVar) => Number.zero;
 
   @override
   Expression simplify() {
     final Expression sarg = arg.simplify();
     if (sarg is Number && (sarg.value == 0 || sarg.value == 1)) {
-      return Number(1);
+      return Number.one;
     }
     return Factorial(arg.simplify());
   }
@@ -1002,7 +1002,7 @@ class AlgorithmicFunction extends DefaultFunction {
   /// For example, to create a function that returns the minimum value
   /// in a given list of arguments:
   ///
-  ///     args = [ Number(2), Number(1), Number(100) ]
+  ///     args = [ Number(2), Number.one, Number(100) ]
   ///     handler = (List<double> args) => args.reduce(math.min)
   ///     f = AlgorithmicFunction('my_min', args, handler);
   ///

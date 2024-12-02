@@ -67,11 +67,11 @@ class ParserTests extends TestSet {
 
   void parseNumber() {
     var cases = {
-      '0': Number(0),
-      '1': Number(1),
-      '1.0': Number(1.0),
+      '0': Number.zero,
+      '1': Number.one,
+      '1.0': Number.one,
       math.pi.toStringAsFixed(11): Number(3.14159265359),
-      '0.0': Number(0.0),
+      '0.0': Number.zero,
       // max precision 15 digits
       '999999999999999': Number(999999999999999),
     };
@@ -93,36 +93,36 @@ class ParserTests extends TestSet {
 
   void parseUnaryMinus() {
     var cases = {
-      '-0': -Number(0),
-      '-1': -Number(1),
-      '-1.0': -Number(1.0),
+      '-0': -Number.zero,
+      '-1': -Number.one,
+      '-1.0': -Number.one,
     };
     parameterized(cases);
   }
 
   void parseUnaryPlus() {
     var cases = {
-      '+0': UnaryPlus(Number(0)),
-      '+1': UnaryPlus(Number(1)),
-      '+1.0': UnaryPlus(Number(1.0)),
+      '+0': UnaryPlus(Number.zero),
+      '+1': UnaryPlus(Number.one),
+      '+1.0': UnaryPlus(Number.one),
     };
     parameterized(cases);
   }
 
   void parsePower() {
     var cases = {
-      '1^1': Number(1) ^ Number(1),
-      '1^0': Number(1) ^ Number(0),
-      '(-1) ^ 2': -Number(1) ^ Number(2),
-      '-1^2': -(Number(1) ^ Number(2)),
-      '1^0 ^20': Number(1) ^ (Number(0) ^ Number(20)),
+      '1^1': Number.one ^ Number.one,
+      '1^0': Number.one ^ Number.zero,
+      '(-1) ^ 2': -Number.one ^ Number(2),
+      '-1^2': -(Number.one ^ Number(2)),
+      '1^0 ^20': Number.one ^ (Number.zero ^ Number(20)),
     };
     parameterized(cases);
   }
 
   void parseModulo() {
     var cases = {
-      '1%1': Number(1) % Number(1),
+      '1%1': Number.one % Number.one,
       '100.0 % 20': Number(100.0) % Number(20),
     };
     parameterized(cases);
@@ -130,7 +130,7 @@ class ParserTests extends TestSet {
 
   void parseMultiplication() {
     var cases = {
-      '0 * 1': Number(0) * Number(1),
+      '0 * 1': Number.zero * Number.one,
       '-2.0 * 5': -Number(2.0) * Number(5),
     };
     parameterized(cases);
@@ -147,7 +147,7 @@ class ParserTests extends TestSet {
 
   void parseDivision() {
     var cases = {
-      '0 / 1': Number(0) / Number(1),
+      '0 / 1': Number.zero / Number.one,
       '-2.0 / 5': -Number(2.0) / Number(5),
     };
     parameterized(cases);
@@ -163,7 +163,7 @@ class ParserTests extends TestSet {
   void parseMinus() {
     var cases = {
       'x - 2': Variable('x') - Number(2),
-      '0 - 2': Number(0) - Number(2),
+      '0 - 2': Number.zero - Number(2),
     };
     parameterized(cases);
   }
@@ -178,8 +178,8 @@ class ParserTests extends TestSet {
 
   void parseParenthesis() {
     var cases = {
-      '(0)': Number(0),
-      '(0-x)': Number(0) - Variable('x'),
+      '(0)': Number.zero,
+      '(0-x)': Number.zero - Variable('x'),
     };
     parameterized(cases);
   }
@@ -191,12 +191,12 @@ class ParserTests extends TestSet {
       'sqrt(10)': Sqrt(Number(10)),
       // n-th root
       'nrt(2,10)': Root(2, Number(10)),
-      'nrt(5,10-1)': Root(5, Number(10) - Number(1)),
+      'nrt(5,10-1)': Root(5, Number(10) - Number.one),
       'cos(10)': Cos(Number(10)),
       'sin(10)': Sin(Number(10)),
       'tan(10)': Tan(Number(10)),
-      'arccos(1)': Acos(Number(1)),
-      'arcsin(1)': Asin(Number(1)),
+      'arccos(1)': Acos(Number.one),
+      'arcsin(1)': Asin(Number.one),
       'arctan(10)': Atan(Number(10)),
       'abs(10)': Abs(Number(10)),
       'sgn(10)': Sgn(Number(10)),
@@ -215,7 +215,7 @@ class ParserTests extends TestSet {
   void parseCustomFunctions() {
     var cases = {
       'myCustomFunction(x)':
-          CustomFunction('myCustomFunction', [Variable('x')], Number(0)),
+          CustomFunction('myCustomFunction', [Variable('x')], Number.zero),
     };
     parameterized(cases);
   }
@@ -223,9 +223,9 @@ class ParserTests extends TestSet {
   void parseAlgorithmicFunctions() {
     var cases = {
       'myAlgorithmicFunction(1.0)': AlgorithmicFunction(
-          'myAlgorithmicFunction', [Number(1.0)], () => null),
+          'myAlgorithmicFunction', [Number.one], () => null),
       'my_min(1,x,-2)': AlgorithmicFunction('my_min',
-          [Number(1), Variable('x'), UnaryMinus(Number(2))], () => null),
+          [Number.one, Variable('x'), UnaryMinus(Number(2))], () => null),
     };
 
     if (!parser.functionHandlers.containsKey('myAlgorithmicFunction')) {

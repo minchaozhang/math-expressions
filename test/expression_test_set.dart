@@ -599,12 +599,12 @@ class ExpressionTests extends TestSet {
      *  Exponential
      */
     // e^0 = 1
-    Expression exp = Exponential(Number(0));
+    Expression exp = Exponential(Number.zero);
     expect(exp.simplify(), TypeMatcher<Number>());
     expect((exp.simplify() as Number).value == 1, isTrue);
 
     // e^1 = e
-    exp = Exponential(Number(1));
+    exp = Exponential(Number.one);
     expect(exp.simplify(), TypeMatcher<Number>());
     expect((exp.simplify() as Number).value == math.e, isTrue);
 
@@ -624,7 +624,7 @@ class ExpressionTests extends TestSet {
      *  Ln
      */
     // ln(1) = 0
-    exp = Ln(Number(1));
+    exp = Ln(Number.one);
     expect(exp.simplify(), TypeMatcher<Number>());
     expect((exp.simplify() as Number).value == 0, isTrue);
 
@@ -642,12 +642,12 @@ class ExpressionTests extends TestSet {
     expect(_isVariable(exp.simplify(), 'x'), isTrue);
 
     // sqrt(0) = 0
-    exp = Sqrt(Number(0));
+    exp = Sqrt(Number.zero);
     expect(exp.simplify(), TypeMatcher<Number>());
     expect((exp.simplify() as Number).value == 0, isTrue);
 
     // sqrt(1) = 1
-    exp = Sqrt(Number(1));
+    exp = Sqrt(Number.one);
     expect(exp.simplify(), TypeMatcher<Number>());
     expect((exp.simplify() as Number).value == 1, isTrue);
 
@@ -655,7 +655,7 @@ class ExpressionTests extends TestSet {
      * Sin
      */
     // sin(0) = 0
-    exp = Sin(Number(0));
+    exp = Sin(Number.zero);
     expect(exp.simplify(), TypeMatcher<Number>());
     expect((exp.simplify() as Number).value == 0, isTrue);
 
@@ -663,7 +663,7 @@ class ExpressionTests extends TestSet {
      * Cos
      */
     // cos(0) = 1
-    exp = Cos(Number(0));
+    exp = Cos(Number.zero);
     expect(exp.simplify(), TypeMatcher<Number>());
     expect((exp.simplify() as Number).value == 1, isTrue);
 
@@ -671,32 +671,32 @@ class ExpressionTests extends TestSet {
      * Tan
      */
     // tan(0) = 0
-    exp = Tan(Number(0));
+    exp = Tan(Number.zero);
     expect(exp.simplify(), TypeMatcher<Number>());
     expect((exp.simplify() as Number).value == 0, isTrue);
 
     /*
      * Asin
      */
-    exp = Asin(Number(0));
+    exp = Asin(Number.zero);
     expect((exp.simplify() as Asin).arg, TypeMatcher<Variable>());
 
     /*
      * Acos
      */
-    exp = Acos(Number(0));
+    exp = Acos(Number.zero);
     expect((exp.simplify() as Acos).arg, TypeMatcher<Variable>());
 
     /*
      * Atan
      */
-    exp = Atan(Number(0));
+    exp = Atan(Number.zero);
     expect((exp.simplify() as Atan).arg, TypeMatcher<Variable>());
 
     /*
      * Abs
      */
-    exp = Abs(Number(0));
+    exp = Abs(Number.zero);
     expect(exp.simplify(), TypeMatcher<Abs>());
     expect((exp.simplify() as Abs).arg, TypeMatcher<BoundVariable>());
 
@@ -715,14 +715,14 @@ class ExpressionTests extends TestSet {
     /*
      * Sgn
      */
-    exp = Sgn(Number(0));
+    exp = Sgn(Number.zero);
     expect(exp.simplify(), TypeMatcher<Sgn>());
     expect((exp.simplify() as Sgn).arg, TypeMatcher<BoundVariable>());
 
     /*
      * Factorial
      */
-    exp = Factorial(Number(0));
+    exp = Factorial(Number.zero);
     expect(exp.simplify(), TypeMatcher<Number>());
     expect((exp.simplify() as Number).value == 1, isTrue);
   }
@@ -787,13 +787,13 @@ class ExpressionTests extends TestSet {
   /// Tests REAL evaluation of default functions.
   void defFuncRealEval() {
     Number zero, one, two, infinity, negInfty, e, pi;
-    zero = Number(0);
-    one = Number(1);
+    zero = Number.zero;
+    one = Number.one;
     two = Number(2);
     infinity = Number(double.infinity);
     negInfty = Number(double.negativeInfinity);
     pi = Number(math.pi);
-    e = Number(math.e);
+    e = Number.e;
 
     /*
      * Exponential
@@ -1222,7 +1222,7 @@ class ExpressionTests extends TestSet {
     // Custom ADD (R^2 -> R)
     vars = [x, y];
     cf = CustomFunction('add', vars, x + y);
-    cm.bindVariable(y, Number(1));
+    cm.bindVariable(y, Number.one);
 
     expect(cf.evaluate(real, cm), equals(5));
 
@@ -1335,7 +1335,7 @@ class ExpressionTests extends TestSet {
   void compFunEval() {
     // See https://github.com/fkleon/math-expressions/pull/66#issue-1175180681
     final x = Variable('x');
-    final one = Number(1), two = Number(2), three = Number(2);
+    final one = Number.one, two = Number(2), three = Number(2);
     final f = Power(x, Divide(two, three));
     final g = Power(Power(x, two), Divide(one, three));
 
@@ -1377,7 +1377,7 @@ class ExpressionTests extends TestSet {
 
     // Generic list minimum (R^3 -> R)
     AlgorithmicFunction f =
-        AlgorithmicFunction('my_min', [Number(1), -Number(1), x], handler);
+        AlgorithmicFunction('my_min', [Number.one, -Number.one, x], handler);
 
     cm.bindVariable(x, -Number(2));
     double min = f.evaluate(EvaluationType.REAL, cm);

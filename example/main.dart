@@ -31,13 +31,13 @@ void _expression_creation_and_evaluation() {
   Variable x = Variable('x'), y = Variable('y');
   Power xSquare = Power(x, 2);
   Cos yCos = Cos(y);
-  Number three = Number(3.0);
+  Number three = Number.fromInt(3);
   exp = (xSquare + yCos) / three;
 
   // Bind variables and evaluate the expression as real number.
   // (2) Bind variables:
   ContextModel cm = ContextModel()
-    ..bindVariable(x, Number(2.0))
+    ..bindVariable(x, Number.fromInt(2))
     ..bindVariable(y, Number(math.pi));
 
   // (3) Evaluate expression:
